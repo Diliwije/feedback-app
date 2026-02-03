@@ -40,6 +40,7 @@ export type UserMinAggregateOutputType = {
   email: string | null
   name: string | null
   image: string | null
+  role: $Enums.Role | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -48,6 +49,7 @@ export type UserMaxAggregateOutputType = {
   email: string | null
   name: string | null
   image: string | null
+  role: $Enums.Role | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -75,6 +77,7 @@ export type UserMinAggregateInputType = {
   email?: true
   name?: true
   image?: true
+  role?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -83,6 +86,7 @@ export type UserMaxAggregateInputType = {
   email?: true
   name?: true
   image?: true
+  role?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -187,7 +191,7 @@ export type UserGroupByOutputType = {
   email: string
   name: string | null
   image: string
-  role: $Enums.Role[]
+  role: $Enums.Role
   _count: UserCountAggregateOutputType | null
   _avg: UserAvgAggregateOutputType | null
   _sum: UserSumAggregateOutputType | null
@@ -219,7 +223,7 @@ export type UserWhereInput = {
   email?: Prisma.StringFilter<"User"> | string
   name?: Prisma.StringNullableFilter<"User"> | string | null
   image?: Prisma.StringFilter<"User"> | string
-  role?: Prisma.EnumRoleNullableListFilter<"User">
+  role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
   posts?: Prisma.PostListRelationFilter
   votes?: Prisma.VoteListRelationFilter
 }
@@ -237,17 +241,17 @@ export type UserOrderByWithRelationInput = {
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
   id?: number
+  clerkUserId?: string
   email?: string
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
-  clerkUserId?: Prisma.StringFilter<"User"> | string
   name?: Prisma.StringNullableFilter<"User"> | string | null
   image?: Prisma.StringFilter<"User"> | string
-  role?: Prisma.EnumRoleNullableListFilter<"User">
+  role?: Prisma.EnumRoleFilter<"User"> | $Enums.Role
   posts?: Prisma.PostListRelationFilter
   votes?: Prisma.VoteListRelationFilter
-}, "id" | "email">
+}, "id" | "clerkUserId" | "email">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -272,7 +276,7 @@ export type UserScalarWhereWithAggregatesInput = {
   email?: Prisma.StringWithAggregatesFilter<"User"> | string
   name?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   image?: Prisma.StringWithAggregatesFilter<"User"> | string
-  role?: Prisma.EnumRoleNullableListFilter<"User">
+  role?: Prisma.EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
 }
 
 export type UserCreateInput = {
@@ -280,7 +284,7 @@ export type UserCreateInput = {
   email: string
   name?: string | null
   image: string
-  role?: Prisma.UserCreateroleInput | $Enums.Role[]
+  role?: $Enums.Role
   posts?: Prisma.PostCreateNestedManyWithoutAuthorInput
   votes?: Prisma.VoteCreateNestedManyWithoutUserInput
 }
@@ -291,7 +295,7 @@ export type UserUncheckedCreateInput = {
   email: string
   name?: string | null
   image: string
-  role?: Prisma.UserCreateroleInput | $Enums.Role[]
+  role?: $Enums.Role
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutUserInput
 }
@@ -301,7 +305,7 @@ export type UserUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.UserUpdateroleInput | $Enums.Role[]
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   posts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
   votes?: Prisma.VoteUpdateManyWithoutUserNestedInput
 }
@@ -312,7 +316,7 @@ export type UserUncheckedUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.UserUpdateroleInput | $Enums.Role[]
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   posts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -323,7 +327,7 @@ export type UserCreateManyInput = {
   email: string
   name?: string | null
   image: string
-  role?: Prisma.UserCreateroleInput | $Enums.Role[]
+  role?: $Enums.Role
 }
 
 export type UserUpdateManyMutationInput = {
@@ -331,7 +335,7 @@ export type UserUpdateManyMutationInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.UserUpdateroleInput | $Enums.Role[]
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -340,15 +344,7 @@ export type UserUncheckedUpdateManyInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.UserUpdateroleInput | $Enums.Role[]
-}
-
-export type EnumRoleNullableListFilter<$PrismaModel = never> = {
-  equals?: $Enums.Role[] | Prisma.ListEnumRoleFieldRefInput<$PrismaModel> | null
-  has?: $Enums.Role | Prisma.EnumRoleFieldRefInput<$PrismaModel> | null
-  hasEvery?: $Enums.Role[] | Prisma.ListEnumRoleFieldRefInput<$PrismaModel>
-  hasSome?: $Enums.Role[] | Prisma.ListEnumRoleFieldRefInput<$PrismaModel>
-  isEmpty?: boolean
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -370,6 +366,7 @@ export type UserMaxOrderByAggregateInput = {
   email?: Prisma.SortOrder
   name?: Prisma.SortOrder
   image?: Prisma.SortOrder
+  role?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -378,6 +375,7 @@ export type UserMinOrderByAggregateInput = {
   email?: Prisma.SortOrder
   name?: Prisma.SortOrder
   image?: Prisma.SortOrder
+  role?: Prisma.SortOrder
 }
 
 export type UserSumOrderByAggregateInput = {
@@ -389,10 +387,6 @@ export type UserScalarRelationFilter = {
   isNot?: Prisma.UserWhereInput
 }
 
-export type UserCreateroleInput = {
-  set: $Enums.Role[]
-}
-
 export type StringFieldUpdateOperationsInput = {
   set?: string
 }
@@ -401,9 +395,8 @@ export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
 }
 
-export type UserUpdateroleInput = {
-  set?: $Enums.Role[]
-  push?: $Enums.Role | $Enums.Role[]
+export type EnumRoleFieldUpdateOperationsInput = {
+  set?: $Enums.Role
 }
 
 export type IntFieldUpdateOperationsInput = {
@@ -447,7 +440,7 @@ export type UserCreateWithoutPostsInput = {
   email: string
   name?: string | null
   image: string
-  role?: Prisma.UserCreateroleInput | $Enums.Role[]
+  role?: $Enums.Role
   votes?: Prisma.VoteCreateNestedManyWithoutUserInput
 }
 
@@ -457,7 +450,7 @@ export type UserUncheckedCreateWithoutPostsInput = {
   email: string
   name?: string | null
   image: string
-  role?: Prisma.UserCreateroleInput | $Enums.Role[]
+  role?: $Enums.Role
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -482,7 +475,7 @@ export type UserUpdateWithoutPostsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.UserUpdateroleInput | $Enums.Role[]
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   votes?: Prisma.VoteUpdateManyWithoutUserNestedInput
 }
 
@@ -492,7 +485,7 @@ export type UserUncheckedUpdateWithoutPostsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.UserUpdateroleInput | $Enums.Role[]
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   votes?: Prisma.VoteUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -501,7 +494,7 @@ export type UserCreateWithoutVotesInput = {
   email: string
   name?: string | null
   image: string
-  role?: Prisma.UserCreateroleInput | $Enums.Role[]
+  role?: $Enums.Role
   posts?: Prisma.PostCreateNestedManyWithoutAuthorInput
 }
 
@@ -511,7 +504,7 @@ export type UserUncheckedCreateWithoutVotesInput = {
   email: string
   name?: string | null
   image: string
-  role?: Prisma.UserCreateroleInput | $Enums.Role[]
+  role?: $Enums.Role
   posts?: Prisma.PostUncheckedCreateNestedManyWithoutAuthorInput
 }
 
@@ -536,7 +529,7 @@ export type UserUpdateWithoutVotesInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.UserUpdateroleInput | $Enums.Role[]
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   posts?: Prisma.PostUpdateManyWithoutAuthorNestedInput
 }
 
@@ -546,7 +539,7 @@ export type UserUncheckedUpdateWithoutVotesInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   image?: Prisma.StringFieldUpdateOperationsInput | string
-  role?: Prisma.UserUpdateroleInput | $Enums.Role[]
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
   posts?: Prisma.PostUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
@@ -650,7 +643,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     email: string
     name: string | null
     image: string
-    role: $Enums.Role[]
+    role: $Enums.Role
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -1081,7 +1074,7 @@ export interface UserFieldRefs {
   readonly email: Prisma.FieldRef<"User", 'String'>
   readonly name: Prisma.FieldRef<"User", 'String'>
   readonly image: Prisma.FieldRef<"User", 'String'>
-  readonly role: Prisma.FieldRef<"User", 'Role[]'>
+  readonly role: Prisma.FieldRef<"User", 'Role'>
 }
     
 

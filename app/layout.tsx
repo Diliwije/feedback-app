@@ -5,6 +5,8 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "sonner";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
+import ThemeProvider from "@/components/theme-provider";
+import { syncCurrentUser } from "@/lib/sync-user";
 
 const inter=Inter({ subsets: ["latin"] });
 
@@ -13,15 +15,17 @@ export const metadata: Metadata = {
   description: "Feedback App built with Next.js, Prisma, and Clerk",
 };
 
-export default function RootLayout({
+export default  async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  await syncCurrentUser();
   return (
     <ClerkProvider>
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} min-h-screen flex flex-col`}>
+      <body className={`${inter.className} min-h-screen flex flex-col`} suppressHydrationWarning>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>  
         {/* <Navbar /> */}
         <Navbar />
         {/* <Main  /> */}
@@ -29,7 +33,7 @@ export default function RootLayout({
         {/* <Footer /> */}
         <Footer />
         <Toaster/>
-        
+        </ThemeProvider>
       </body>
     </html>
     </ClerkProvider>

@@ -11,7 +11,7 @@ CREATE TABLE "users" (
     "email" TEXT NOT NULL,
     "name" TEXT,
     "image" TEXT NOT NULL,
-    "role" "Role"[] DEFAULT ARRAY['user']::"Role"[],
+    "role" "Role" NOT NULL DEFAULT 'user',
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );
@@ -38,6 +38,9 @@ CREATE TABLE "Vote" (
 
     CONSTRAINT "Vote_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "users_clerkUserId_key" ON "users"("clerkUserId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
